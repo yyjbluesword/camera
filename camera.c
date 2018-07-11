@@ -44,8 +44,8 @@ int top103PhotoMode()
 {
 	printf("top103PhotoMode function was invoked.\n");
 	char buff[255];
-	buff[0] = '0XFF';buff[1] = '0X01';buff[2] = '0x00';buff[3] = '0x07';
-	buff[4] = '0x00';buff[5] = '0X67';buff[6] = '0x6F';
+	buff[0] = 0XFF;buff[1] = 0X01;buff[2] = 0x00;buff[3] = 0x07;
+	buff[4] = 0x00;buff[5] = 0X67;buff[6] = 0x6F;
 	uart_Send(uart_fd1, buff, 7);
 	return 1;
 }
@@ -54,8 +54,8 @@ int top103ShotScreen()
 {
 	printf("toop103ShotScreen function was invoked.\n");
 	char buff[255];
-	buff[0] = '0XFF';buff[1] = '0X01';buff[2] = '0X00';buff[3] = '0x07';
-	buff[4] = '0x00';buff[5] = '0x66';buff[6] = '0x6E';
+	buff[0] = 0XFF;buff[1] = 0X01;buff[2] = 0X00;buff[3] = 0x07;
+	buff[4] = 0x00;buff[5] = 0x66;buff[6] = 0x6E;
 	uart_Send(uart_fd1, buff, 7);
 	return 1;
 }
