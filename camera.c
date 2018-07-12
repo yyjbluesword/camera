@@ -9,6 +9,8 @@
 static int uart_fd1;
 int rbcamera_init()
 {
+	system("echo wr-rs485 > /sys/devices/soc0/soc.1/2100000.aips-bus/21b8000.weim/8000000.fpga/uartmode");
+	msleep(100);
 	if((uart_fd1=uart_open("ttymxc2"))<0){
 		return -1;
 	}
