@@ -48,6 +48,7 @@ int top103PhotoMode()
 	buff[0] = 0XFF;buff[1] = 0X01;buff[2] = 0x00;buff[3] = 0x07;
 	buff[4] = 0x00;buff[5] = 0X67;buff[6] = 0x6F;
 	uart_Send(uart_fd1, buff, 7);
+	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
 	return 1;
 }
 
@@ -58,21 +59,18 @@ int top103ShotScreen()
 	buff[0] = 0XFF;buff[1] = 0X01;buff[2] = 0X00;buff[3] = 0x07;
 	buff[4] = 0x00;buff[5] = 0x66;buff[6] = 0x6E;
 	uart_Send(uart_fd1, buff, 7);
+	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
 	return 1;
 }
 
 int top103CameraSwitch(int onoff)
 {
-	/*char buff[4];
+	char buff[4];
 	if(onoff)
 		strcpy(buff,"ON");
 	else
 		strcpy(buff,"OFF");
-	*/
-	char buff[255];
-	buff[0] = 0XFF;buff[1] = 0x01; buff[2] = 0x00; buff[3] = 0x07;
-	buff[4] = 0x00; buff[5] = 0x67; buff[6] = 0x6F;
-	uart_Send(uart_fd1, buff, 7);
 	printf("top103CameraSwitch %s function was invoked.\n",buff);
+	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
 	return 1;
 }
