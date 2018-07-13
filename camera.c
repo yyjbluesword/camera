@@ -5,7 +5,52 @@
 #include <unistd.h>
 #include <string.h>
 #include "camera.h"
+#include "common.h"
 
+char char2hex(char c)
+{
+	switch(c){
+		case '0':
+			return 0x00;
+		case '1':
+			return 0x01;
+		case '2':
+			return 0x02;
+		case '3':
+			return 0x03;
+		case '4':
+			return 0x04;
+		case '5':
+			return 0x05;
+		case '6':
+			return 0x06;
+		case '7':
+			return 0x07;
+		case '8':
+			return 0x08;
+		case '9':
+			return 0x09;
+		case 'a':
+		case 'A':
+			return 0x0A;
+		case 'b':
+		case 'B':
+			return 0x0B;
+		case 'c':
+		case 'C':
+			return 0x0C;
+		case 'd':
+		case 'D':
+			return 0x0D;
+		case 'e':
+		case 'E':
+			return 0x0E;
+		case 'f':
+		case 'F':
+			return 0x0F;
+	}
+	return 0x00;
+}
 static int uart_fd1;
 int rbcamera_init()
 {
@@ -19,58 +64,43 @@ int rbcamera_init()
 
 int top103SetZoom(char *tmp)
 {
-	printf("top103SetZoom function was invoked.\n");
-	char buff[255];
-	strcpy(buff,":wF716");
-	strcat(buff,tmp);
-	buff[strlen(buff)]='\0';
-	uart_Send(uart_fd1,buff,strlen(buff));
-	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
-	return 1;
-}
-
-int top103SetFocus(char *tmp)
-{
-	printf("top103SetFocus function was invoked.\n");
-	char buff[255];
-	strcpy(buff,":wF712");
-	strcat(buff,tmp);
-	buff[strlen(buff)]='\0';
-	uart_Send(uart_fd1, buff, strlen(buff));
-	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
+	char buff[13];
+	buff[0] = 0x81; buff[1] = 0x01; buff[2] = 0x04;	buff[3] = 0x47; 
+	buff[4] = char2hex(tmp[0]); buff[5] = char2hex(tmp[1]);	buff[6] = char2hex(tmp[2]); buff[7] = char2hex(tmp[3]);
+	buff[8] = char2hex(tmp[4]); buff[9] = char2hex(tmp[5]); buff[10] = char2hex(tmp[6]); buff[11] = char2hex(tmp[7]);
+	buff[12] = 0xFF;
+	uart_Send(uart_fd1, buff, 13);
 	return 1;
 }
 
 int top103PhotoMode()
 {
-	printf("top103PhotoMode function was invoked.\n");
-	char buff[255];
+	char buff[7];
 	buff[0] = 0XFF;buff[1] = 0X01;buff[2] = 0x00;buff[3] = 0x07;
 	buff[4] = 0x00;buff[5] = 0X67;buff[6] = 0x6F;
 	uart_Send(uart_fd1, buff, 7);
-	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
 	return 1;
 }
 
 int top103ShotScreen()
 {
-	printf("toop103ShotScreen function was invoked.\n");
-	char buff[255];
+	char buff[7];
 	buff[0] = 0XFF;buff[1] = 0X01;buff[2] = 0X00;buff[3] = 0x07;
 	buff[4] = 0x00;buff[5] = 0x66;buff[6] = 0x6E;
 	uart_Send(uart_fd1, buff, 7);
-	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
 	return 1;
 }
 
 int top103CameraSwitch(int onoff)
 {
-	char buff[4];
-	if(onoff)
-		strcpy(buff,"ON");
-	else
-		strcpy(buff,"OFF");
-	printf("top103CameraSwitch %s function was invoked.\n",buff);
-	printf("uart_Send %s!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n",buff);
+	char buff[6];	
+	if(onoff){
+		buff[0] = 0x81; buff[1] = 0x01; buff[2] = 0x04; buff[3] = 0x00;
+		buff[4] = 0x02; buff[5] = 0xFF;
+	}else{
+		buff[0] = 0x81; buff[1] = 0x01; buff[2] = 0x04; buff[3] = 0x00;
+		buff[4] = 0x03; buff[5] = 0xFF;
+	}
+	uart_Send(uart_fd1, buff, 6);
 	return 1;
 }
